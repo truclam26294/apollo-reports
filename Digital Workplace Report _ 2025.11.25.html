@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apollo Digital Workplace Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        apollo: '#E31E24',
+                        primary: '#1e3a8a',
+                        secondary: '#64748b',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6; }
+        .card { transition: all 0.2s; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .tab-active { border-bottom: 2px solid #1e3a8a; color: #1e3a8a; font-weight: 600; }
+        .tab-inactive { color: #64748b; }
+        .badge { font-size: 0.75rem; padding: 0.15rem 0.5rem; border-radius: 0.25rem; white-space: nowrap; margin-right: 4px; margin-bottom: 4px; display: inline-block; font-weight: 500; }
+        
+        /* Badge Colors */
+        .badge-platform { background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; } /* Blue */
+        .badge-utility { background-color: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; } /* Gray */
+        .badge-chat { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; } /* Green */
+        .badge-business { background-color: #fce7f3; color: #9d174d; border: 1px solid #fbcfe8; } /* Pink */
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-primary text-white p-2 rounded-lg">
+                    <i class="fa-solid fa-network-wired text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-gray-900">Digital Workplace Report</h1>
+                    <p class="text-xs text-gray-500">Cập nhật: 25/11/2025 | Apollo Group</p>
+                </div>
+            </div>
+            <div class="text-right hidden sm:block">
+                <p class="text-sm font-semibold text-gray-700">IT System: Trực</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow border-l-4 border-blue-500">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-sm text-gray-500">Phòng ban</p>
+                        <p class="text-2xl font-bold text-gray-800" id="total-depts">0</p>
+                    </div>
+                    <i class="fa-solid fa-building text-blue-200 text-3xl"></i>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow border-l-4 border-green-500">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-sm text-gray-500">Ứng dụng Chat</p>
+                        <p class="text-2xl font-bold text-gray-800">5</p>
+                    </div>
+                    <i class="fa-brands fa-whatsapp text-green-200 text-3xl"></i>
+                </div>
+                <p class="text-xs text-gray-400 mt-1">Zalo, Teams, Viber, Whatsapp, Kakao/Wechat</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow border-l-4 border-purple-500">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-sm text-gray-500">App Nghiệp vụ</p>
+                        <p class="text-2xl font-bold text-gray-800" id="total-biz-apps">0</p>
+                    </div>
+                    <i class="fa-solid fa-briefcase text-purple-200 text-3xl"></i>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow border-l-4 border-orange-500">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-sm text-gray-500">License Core</p>
+                        <p class="text-lg font-bold text-gray-800">M365 Basic</p>
+                    </div>
+                    <i class="fa-brands fa-microsoft text-orange-200 text-3xl"></i>
+                </div>
+                <p class="text-xs text-gray-400 mt-1">Standard All Users</p>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="border-b border-gray-200 mb-6">
+            <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                <button onclick="switchView('department')" id="tab-dept" class="tab-active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-users"></i> Thống kê theo Phòng Ban
+                </button>
+                <button onclick="switchView('category')" id="tab-cat" class="tab-inactive whitespace-nowrap py-4 px-1 border-b-2 border-transparent font-medium text-sm flex items-center gap-2 hover:text-gray-700 hover:border-gray-300">
+                    <i class="fa-solid fa-layer-group"></i> Thống kê theo Loại App
+                </button>
+            </nav>
+        </div>
+
+        <!-- View 1: By Department -->
+        <div id="view-department" class="block animate-fade-in">
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="dept-grid">
+                <!-- Javascript will render cards here -->
+            </div>
+        </div>
+
+        <!-- View 2: By Category -->
+        <div id="view-category" class="hidden animate-fade-in">
+            <div class="grid grid-cols-1 gap-6">
+                
+                <!-- Platform Section -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-bold text-blue-800 mb-4 border-b pb-2"><i class="fa-brands fa-windows"></i> Phần mềm Nền tảng (Platform)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="cat-platform"></div>
+                </div>
+
+                 <!-- Utility Section -->
+                 <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-bold text-gray-600 mb-4 border-b pb-2"><i class="fa-solid fa-toolbox"></i> Phần mềm Tiện ích (Utilities)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="cat-utility"></div>
+                </div>
+
+                 <!-- Chat Section -->
+                 <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-bold text-green-700 mb-4 border-b pb-2"><i class="fa-solid fa-comments"></i> Phần mềm Chat & Collaboration</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="cat-chat"></div>
+                </div>
+
+                <!-- Business Section -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-bold text-purple-700 mb-4 border-b pb-2"><i class="fa-solid fa-rocket"></i> Phần mềm Nghiệp vụ (Specialized)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="cat-business"></div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-white border-t mt-12 py-6">
+        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-500">
+            &copy; 2025 Apollo Internal Report. Powered by IT Department.
+        </div>
+    </footer>
+
+    <!-- DATA & LOGIC -->
+    <script>
+        // --- 1. CONFIGURATION: SORT ORDERS ---
+        const SORT_ORDER = {
+            platform: ['MS Teams', 'Office', 'Outlook', 'Edge', 'Chrome', 'Fast Online', 'Base Wework'], 
+            utility: ['Unikey', 'Winrar', 'Foxit Reader'],
+            chat: ['Zalo', 'Whatsapp', 'Viber']
+        };
+
+        // Helper function to sort array based on predefined order
+        function sortApps(apps, orderList) {
+            if (!apps) return [];
+            return [...apps].sort((a, b) => {
+                let indexA = orderList.indexOf(a);
+                let indexB = orderList.indexOf(b);
+                
+                // If item not found in list, put it at the end
+                if (indexA === -1) indexA = 999;
+                if (indexB === -1) indexB = 999;
+                
+                return indexA - indexB;
+            });
+        }
+
+        // --- 2. RAW DATA (Corrected) ---
+        const departments = [
+            {
+                name: "Kinh Doanh",
+                icon: "fa-briefcase",
+                platform: ["Office", "Outlook", "MS Teams", "Edge", "Chrome", "Fast Online", "Base Wework"],
+                utility: ["Winrar", "Unikey", "Foxit Reader"],
+                chat: ["Zalo", "Whatsapp", "Viber"],
+                business: [],
+                license: "M365 Basic, Base"
+            },
+            {
+                name: "Ban Thư Ký",
+                icon: "fa-pen-nib",
+                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Fast Online", "Chrome"],
+                utility: ["Foxit Reader", "Winrar", "Unikey"],
+                chat: ["Viber", "Zalo", "Whatsapp"],
+                business: ["PowerBI"], 
+                license: "M365 Basic, Base"
+            },
+            {
+                name: "Ngoại Thương (Tầng 1)",
+                icon: "fa-globe",
+                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge"],
+                utility: ["Foxit Reader", "Winrar", "Unikey"],
+                chat: ["Kakao Talk", "Wechat", "Zalo", "Whatsapp"],
+                business: ["Adobe Photoshop", "Adobe Acrobat", "X-Change PDF Editor"],
+                license: "M365 Basic, Base" 
+            },
+            {
+                name: "Ngoại Thương (Tầng 2)",
+                icon: "fa-ship",
+                platform: ["Fast Online", "Base Wework", "Chrome", "Office", "Outlook", "MS Teams", "Edge"],
+                utility: ["Foxit Reader", "Winrar", "Unikey"],
+                chat: ["Viber", "Kakao Talk", "Wechat", "Zalo", "Whatsapp"],
+                business: ["ECUSS", "VNACCS", "Adobe Acrobat", "X-Change PDF Editor", "Adobe Photoshop"], 
+                license: "M365 Basic, Base"
+            },
+            {
+                name: "Hệ Thống (chị Lý)",
+                icon: "fa-server",
+                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Fast Online", "Chrome"],
+                utility: ["Foxit Reader", "Winrar", "Unikey"],
+                chat: ["Viber", "Zalo", "Whatsapp"],
+                business: [], // REMOVED: "X-Change PDF Editor"
+                license: "M365 Basic, Base"
+            },
+            {
+                name: "Thu Mua - Office",
+                icon: "fa-shopping-cart",
+                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Fast Online", "Chrome"],
+                utility: ["Foxit Reader", "Winrar", "Unikey"],
+                chat: ["Zalo", "Whatsapp","Viber"],
+                business: ["Autocad", "X-Change PDF Editor"], 
+                license: "M365 Basic, Base"
+            },
+            {
+                name: "Thu Mua - Xây Dựng",
+                icon: "fa-hard-hat",
+                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge"],
+                utility: ["Foxit Reader", "Winrar", "Unikey"],
+                chat: ["Zalo", "Whatsapp"],
+                business: ["3DS Max", "Sketchup","Autocad", "Adobe Photoshop"],
+                license: "M365 Basic, Base"
+            },
+            {
+                name: "HCNS - Hành Chính",
+                icon: "fa-user-shield",
+                platform: ["Fast Online", "Base Wework", "Chrome", "Office", "Outlook", "MS Teams", "Edge"],
+                utility: ["Foxit Reader", "Winrar", "Unikey"],
+                chat: ["Zalo", "Whatsapp", "Viber"],
+                business: [], // REMOVED: "iBHXH" (was BHXH)
+                license: "M365 Basic, Base"
+            },
+            {
+                name: "HCNS - Tuyển Dụng và C&B", // Combined
+                icon: "fa-users-gear", 
+                platform: ["Fast Online", "Office", "Outlook", "MS Teams", "Edge", "Chrome"], 
+                utility: ["Foxit Reader", "Winrar", "Unikey"],
+                chat: ["Zalo", "Whatsapp", "Viber"],
+                business: ["TS24 Pro", "HTKK", "iBHXH"], // RENAMED: BHXH to iBHXH
+                license: "M365 Basic"
+            },
+            {
+                name: "Kế Toán",
+                icon: "fa-calculator",
+                platform: ["MS Teams", "Edge", "Fast Online", "Office", "Outlook", "Chrome"], 
+                utility: ["Foxit Reader", "Winrar", "Unikey"],
+                business: ["MISA", "HTKK", "X-Change PDF Editor", "Fast Offline"], 
+                chat: ["Zalo", "Whatsapp"],
+                license: "M365 Basic"
+            },
+            {
+                name: "Tài Chính",
+                icon: "fa-chart-line",
+                platform: ["MS Teams", "Edge", "Fast Online", "Office", "Outlook", "Chrome"],
+                utility: ["Foxit Reader", "Winrar", "Unikey"],
+                chat: ["Zalo", "Whatsapp", "Viber"],
+                business: ["X-Change PDF Editor", "Fast Offline"], 
+                license: "M365 Basic"
+            },
+            {
+                name: "PTKD (General)",
+                icon: "fa-search-dollar",
+                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Fast Online", "Chrome"],
+                utility: ["Foxit Reader", "Winrar", "Unikey"],
+                chat: ["Zalo", "Whatsapp"],
+                business: ["PowerBI"],
+                license: "M365 Basic, Base"
+            },
+            {
+                name: "PTKD - BA",
+                icon: "fa-laptop-code",
+                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Fast Online", "Chrome"],
+                utility: ["Foxit Reader", "Winrar", "Unikey"],
+                chat: ["Zalo", "Whatsapp"],
+                business: ["SQL SSMS", "Spyder","PowerBI"],
+                license: "M365 Basic, Base"
+            },
+            {
+                name: "PTKD - Thị Trường",
+                icon: "fa-store",
+                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Chrome"],
+                utility: ["Foxit Reader", "Winrar", "Unikey"],
+                chat: ["Zalo", "Whatsapp"],
+                business: [],
+                license: "M365 Basic, Base"
+            },
+            {
+                name: "Dược",
+                icon: "fa-pills",
+                platform: ["Fast Online", "Office", "Outlook", "MS Teams", "Edge"],
+                utility: ["Foxit Reader", "Winrar", "Unikey"],
+                chat: ["Zalo", "Whatsapp"],
+                business: [],
+                license: "M365 Basic, Base"
+            }
+        ];
+
+        // Unique set of Business Apps for counters
+        const allBizApps = new Set();
+        departments.forEach(d => d.business.forEach(app => allBizApps.add(app)));
+
+        // Init Counters
+        document.getElementById('total-depts').innerText = departments.length;
+        document.getElementById('total-biz-apps').innerText = allBizApps.size;
+
+        // --- 3. RENDER LOGIC: Department View (Updated to sort by Name) ---
+        function renderDepartments() {
+            const container = document.getElementById('dept-grid');
+            container.innerHTML = '';
+            
+            // Sort departments array alphabetically by name
+            const sortedDepartments = [...departments].sort((a, b) => a.name.localeCompare(b.name, 'vi', { sensitivity: 'base' }));
+
+            sortedDepartments.forEach(dept => {
+                const card = document.createElement('div');
+                card.className = 'card bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col h-full';
+                
+                // Helper to gen badges
+                const genBadges = (list, type) => list.map(item => `<span class="badge badge-${type}">${item}</span>`).join('');
+
+                // *** SORTING APP WITHIN DEPARTMENT ***
+                const sortedPlatform = sortApps(dept.platform, SORT_ORDER.platform);
+                const sortedUtility = sortApps(dept.utility, SORT_ORDER.utility);
+                const sortedChat = sortApps(dept.chat, SORT_ORDER.chat);
+                const sortedBusiness = dept.business.sort(); // Alphabetical for business
+
+                const hasPlatform = sortedPlatform.length > 0;
+                const hasUtility = sortedUtility.length > 0;
+                const hasChat = sortedChat.length > 0;
+                const hasBusiness = sortedBusiness.length > 0;
+
+                card.innerHTML = `
+                    <div class="flex items-center gap-3 mb-4 border-b pb-3">
+                        <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-primary shrink-0">
+                            <i class="fa-solid ${dept.icon}"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800">${dept.name}</h3>
+                            <div class="text-xs mt-1 text-gray-500 font-medium">License: <span class="text-orange-600">${dept.license}</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4 text-sm flex-grow">
+                        <!-- 1. Nền tảng (Platform & Utility) -->
+                        ${hasPlatform || hasUtility ? `
+                        <div>
+                            <p class="text-xs font-bold text-blue-800 uppercase mb-1 flex items-center gap-1">
+                                <i class="fa-brands fa-windows w-4"></i> Nền tảng (Platform)
+                            </p>
+                            <div class="leading-relaxed">
+                                <!-- Dòng 1: Core Apps (Teams, Office, Edge...) -->
+                                <div class="mb-1">
+                                    ${genBadges(sortedPlatform, 'platform')}
+                                </div>
+                                <!-- Dòng 2: Tiện ích (Unikey, Winrar...) -->
+                                ${hasUtility ? `
+                                <div>
+                                    ${genBadges(sortedUtility, 'utility')}
+                                </div>` : ''}
+                            </div>
+                        </div>` : ''}
+
+                        <!-- 2. Chat -->
+                        ${hasChat ? `
+                        <div class="border-t border-dashed border-gray-100 pt-2">
+                            <p class="text-xs font-bold text-green-700 uppercase mb-1 flex items-center gap-1">
+                                <i class="fa-solid fa-comments w-4"></i> Chat
+                            </p>
+                            <div class="leading-relaxed">${genBadges(sortedChat, 'chat')}</div>
+                        </div>` : ''}
+
+                        <!-- 3. Nghiệp vụ -->
+                        ${hasBusiness ? `
+                        <div class="border-t border-dashed border-gray-100 pt-2">
+                            <p class="text-xs font-bold text-purple-700 uppercase mb-1 flex items-center gap-1">
+                                <i class="fa-solid fa-briefcase w-4"></i> Nghiệp vụ
+                            </p>
+                            <div class="leading-relaxed">${genBadges(sortedBusiness, 'business')}</div>
+                        </div>` : ''}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // --- 4. RENDER LOGIC: Category View (Updated to sort by popularity) ---
+        function renderCategories() {
+            // Pivot data and count usage
+            const categories = {
+                platform: {},
+                chat: {},
+                business: {},
+                utility: {}
+            };
+
+            const countApp = (type, appName, deptName) => {
+                if (!categories[type][appName]) categories[type][appName] = [];
+                categories[type][appName].push(deptName);
+            };
+
+            departments.forEach(d => {
+                d.platform.forEach(app => countApp('platform', app, d.name));
+                d.chat.forEach(app => countApp('chat', app, d.name));
+                d.business.forEach(app => countApp('business', app, d.name));
+                d.utility.forEach(app => countApp('utility', app, d.name));
+            });
+
+            // Render Function for a specific category section
+            const renderSection = (type, elementId, iconColor) => {
+                const container = document.getElementById(elementId);
+                container.innerHTML = '';
+                
+                // Convert object to array for sorting by count
+                let appArray = Object.keys(categories[type]).map(app => ({
+                    name: app,
+                    depts: categories[type][app],
+                    count: categories[type][app].length
+                }));
+
+                // Sort by count (descending)
+                appArray.sort((a, b) => b.count - a.count);
+
+                appArray.forEach(appData => {
+                    const depts = appData.depts;
+                    const app = appData.name;
+                    // Hầu hết các phòng ban nếu count > 10 (tổng cộng 15 phòng ban)
+                    const isAll = appData.count > 10; 
+
+                    const item = document.createElement('div');
+                    item.className = 'border rounded-lg p-3 hover:bg-gray-50';
+                    item.innerHTML = `
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="font-semibold text-gray-800">${app}</span>
+                            <span class="text-xs font-bold bg-gray-200 px-2 py-0.5 rounded-full text-gray-600">${depts.length}</span>
+                        </div>
+                        <div class="text-xs text-gray-500 leading-relaxed">
+                            ${isAll ? '<span class="italic text-blue-600 font-medium">Hầu hết các phòng ban</span>' : depts.join(', ')}
+                        </div>
+                    `;
+                    container.appendChild(item);
+                });
+            };
+
+            renderSection('platform', 'cat-platform');
+            renderSection('utility', 'cat-utility');
+            renderSection('chat', 'cat-chat');
+            renderSection('business', 'cat-business');
+        }
+
+        // Tab Switching
+        function switchView(viewName) {
+            const deptView = document.getElementById('view-department');
+            const catView = document.getElementById('view-category');
+            const tabDept = document.getElementById('tab-dept');
+            const tabCat = document.getElementById('tab-cat');
+
+            if (viewName === 'department') {
+                deptView.classList.remove('hidden');
+                catView.classList.add('hidden');
+                
+                tabDept.classList.add('tab-active', 'border-b-2');
+                tabDept.classList.remove('tab-inactive', 'border-transparent');
+                
+                tabCat.classList.remove('tab-active', 'border-b-2');
+                tabCat.classList.add('tab-inactive', 'border-transparent');
+            } else {
+                deptView.classList.add('hidden');
+                catView.classList.remove('hidden');
+
+                tabCat.classList.add('tab-active', 'border-b-2');
+                tabCat.classList.remove('tab-inactive', 'border-transparent');
+
+                tabDept.classList.remove('tab-active', 'border-b-2');
+                tabDept.classList.add('tab-inactive', 'border-transparent');
+            }
+        }
+
+        // Initial Run
+        renderDepartments();
+        renderCategories();
+
+    </script>
+</body>
+</html>
