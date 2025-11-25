@@ -160,7 +160,8 @@
     <script>
         // --- 1. CONFIGURATION: SORT ORDERS ---
         const SORT_ORDER = {
-            platform: ['MS Teams', 'Office', 'Outlook', 'Edge', 'Chrome', 'Fast Online', 'Base Wework'], 
+            // Rule: MS Teams -> Office -> Outlook -> Edge -> Chrome -> Base Wework
+            platform: ['MS Teams', 'Office', 'Outlook', 'Edge', 'Chrome', 'Base Wework'], 
             utility: ['Unikey', 'Winrar', 'Foxit Reader'],
             chat: ['Zalo', 'Whatsapp', 'Viber']
         };
@@ -180,123 +181,127 @@
             });
         }
 
-        // --- 2. RAW DATA (Corrected) ---
-        const departments = [
+        // Helper function to safely remove an item from an array
+        const removeApp = (arr, app) => arr.filter(item => item !== app);
+        // Helper function to safely add an item to the end of an array (only if not already present)
+        const addApp = (arr, app) => arr.includes(app) ? arr : [...arr, app];
+
+        // --- 2. RAW DATA (Updated to fix Chrome and Fast Online inclusion) ---
+        let departments = [
             {
                 name: "Kinh Doanh",
                 icon: "fa-briefcase",
-                platform: ["Office", "Outlook", "MS Teams", "Edge", "Chrome", "Fast Online", "Base Wework"],
+                platform: ["Office", "Outlook", "MS Teams", "Edge", "Chrome", "Base Wework"],
                 utility: ["Winrar", "Unikey", "Foxit Reader"],
                 chat: ["Zalo", "Whatsapp", "Viber"],
-                business: [],
+                business: ["Fast Online"],
                 license: "M365 Basic, Base"
             },
             {
                 name: "Ban Thư Ký",
                 icon: "fa-pen-nib",
-                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Fast Online", "Chrome"],
+                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Chrome"],
                 utility: ["Foxit Reader", "Winrar", "Unikey"],
                 chat: ["Viber", "Zalo", "Whatsapp"],
-                business: ["PowerBI"], 
+                business: ["PowerBI", "Fast Online"],
                 license: "M365 Basic, Base"
             },
             {
                 name: "Ngoại Thương (Tầng 1)",
                 icon: "fa-globe",
-                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge"],
+                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Chrome"], // ADDED Chrome
                 utility: ["Foxit Reader", "Winrar", "Unikey"],
                 chat: ["Kakao Talk", "Wechat", "Zalo", "Whatsapp"],
-                business: ["Adobe Photoshop", "Adobe Acrobat", "X-Change PDF Editor"],
+                business: ["Adobe Photoshop", "Adobe Acrobat", "X-Change PDF Editor", "Fast Online"], // ADDED Fast Online
                 license: "M365 Basic, Base" 
             },
             {
                 name: "Ngoại Thương (Tầng 2)",
                 icon: "fa-ship",
-                platform: ["Fast Online", "Base Wework", "Chrome", "Office", "Outlook", "MS Teams", "Edge"],
+                platform: ["Base Wework", "Chrome", "Office", "Outlook", "MS Teams", "Edge"],
                 utility: ["Foxit Reader", "Winrar", "Unikey"],
                 chat: ["Viber", "Kakao Talk", "Wechat", "Zalo", "Whatsapp"],
-                business: ["ECUSS", "VNACCS", "Adobe Acrobat", "X-Change PDF Editor", "Adobe Photoshop"], 
+                business: ["ECUSS", "VNACCS", "Adobe Acrobat", "X-Change PDF Editor", "Adobe Photoshop", "Fast Online"],
                 license: "M365 Basic, Base"
             },
             {
                 name: "Hệ Thống (chị Lý)",
                 icon: "fa-server",
-                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Fast Online", "Chrome"],
+                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Chrome"],
                 utility: ["Foxit Reader", "Winrar", "Unikey"],
                 chat: ["Viber", "Zalo", "Whatsapp"],
-                business: [], // REMOVED: "X-Change PDF Editor"
+                business: ["Fast Online"],
                 license: "M365 Basic, Base"
             },
             {
                 name: "Thu Mua - Office",
                 icon: "fa-shopping-cart",
-                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Fast Online", "Chrome"],
+                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Chrome"],
                 utility: ["Foxit Reader", "Winrar", "Unikey"],
                 chat: ["Zalo", "Whatsapp","Viber"],
-                business: ["Autocad", "X-Change PDF Editor"], 
+                business: ["Autocad", "X-Change PDF Editor", "Fast Online"],
                 license: "M365 Basic, Base"
             },
             {
                 name: "Thu Mua - Xây Dựng",
                 icon: "fa-hard-hat",
-                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge"],
+                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Chrome"], // ADDED Chrome
                 utility: ["Foxit Reader", "Winrar", "Unikey"],
                 chat: ["Zalo", "Whatsapp"],
-                business: ["3DS Max", "Sketchup","Autocad", "Adobe Photoshop"],
+                business: ["3DS Max", "Sketchup","Autocad", "Adobe Photoshop", "Fast Online"], // ADDED Fast Online
                 license: "M365 Basic, Base"
             },
             {
                 name: "HCNS - Hành Chính",
                 icon: "fa-user-shield",
-                platform: ["Fast Online", "Base Wework", "Chrome", "Office", "Outlook", "MS Teams", "Edge"],
+                platform: ["Base Wework", "Chrome", "Office", "Outlook", "MS Teams", "Edge"],
                 utility: ["Foxit Reader", "Winrar", "Unikey"],
                 chat: ["Zalo", "Whatsapp", "Viber"],
-                business: [], // REMOVED: "iBHXH" (was BHXH)
+                business: ["Base Wework", "Fast Online"],
                 license: "M365 Basic, Base"
             },
             {
                 name: "HCNS - Tuyển Dụng và C&B", // Combined
                 icon: "fa-users-gear", 
-                platform: ["Fast Online", "Office", "Outlook", "MS Teams", "Edge", "Chrome"], 
+                platform: ["Office", "Outlook", "MS Teams", "Edge", "Chrome"], 
                 utility: ["Foxit Reader", "Winrar", "Unikey"],
-                chat: ["Zalo", "Whatsapp", "Viber"],
-                business: ["TS24 Pro", "HTKK", "iBHXH"], // RENAMED: BHXH to iBHXH
+                business: ["TS24 Pro", "HTKK", "iBHXH", "Fast Online"],
                 license: "M365 Basic"
             },
             {
                 name: "Kế Toán",
                 icon: "fa-calculator",
-                platform: ["MS Teams", "Edge", "Fast Online", "Office", "Outlook", "Chrome"], 
+                platform: ["MS Teams", "Edge", "Office", "Outlook", "Chrome"], 
                 utility: ["Foxit Reader", "Winrar", "Unikey"],
-                business: ["MISA", "HTKK", "X-Change PDF Editor", "Fast Offline"], 
+                business: ["MISA", "HTKK", "X-Change PDF Editor", "Fast Offline", "Fast Online"],
                 chat: ["Zalo", "Whatsapp"],
                 license: "M365 Basic"
             },
             {
                 name: "Tài Chính",
                 icon: "fa-chart-line",
-                platform: ["MS Teams", "Edge", "Fast Online", "Office", "Outlook", "Chrome"],
+                platform: ["MS Teams", "Edge", "Office", "Outlook", "Chrome"],
                 utility: ["Foxit Reader", "Winrar", "Unikey"],
                 chat: ["Zalo", "Whatsapp", "Viber"],
-                business: ["X-Change PDF Editor"], 
+                business: ["X-Change PDF Editor", "Fast Offline", "Fast Online"],
                 license: "M365 Basic"
             },
             {
                 name: "PTKD (General)",
                 icon: "fa-search-dollar",
-                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Fast Online", "Chrome"],
+                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Chrome"],
                 utility: ["Foxit Reader", "Winrar", "Unikey"],
                 chat: ["Zalo", "Whatsapp"],
-                business: ["PowerBI"],
+                business: ["PowerBI", "Fast Online"],
                 license: "M365 Basic, Base"
             },
             {
                 name: "PTKD - BA",
                 icon: "fa-laptop-code",
-                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Fast Online", "Chrome"],
+                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Chrome"],
                 utility: ["Foxit Reader", "Winrar", "Unikey"],
                 chat: ["Zalo", "Whatsapp"],
-                business: ["SQL SSMS", "Spyder","PowerBI"],
+                business: ["SQL SSMS", "Spyder","PowerBI", "Fast Online"],
                 license: "M365 Basic, Base"
             },
             {
@@ -305,19 +310,28 @@
                 platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Chrome"],
                 utility: ["Foxit Reader", "Winrar", "Unikey"],
                 chat: ["Zalo", "Whatsapp"],
-                business: [],
+                business: ["Fast Online"], // ADDED Fast Online
                 license: "M365 Basic, Base"
             },
             {
                 name: "Dược",
                 icon: "fa-pills",
-                platform: ["Fast Online", "Office", "Outlook", "MS Teams", "Edge"],
+                platform: ["Office", "Outlook", "MS Teams", "Edge", "Chrome"], // ADDED Chrome
                 utility: ["Foxit Reader", "Winrar", "Unikey"],
                 chat: ["Zalo", "Whatsapp"],
-                business: [],
+                business: ["Fast Online"],
                 license: "M365 Basic, Base"
             }
         ];
+
+        // --- GLOBAL DATA CLEANUP: Ensure Chrome is in Platform and Fast Online is in Business for ALL ---
+        // Although manually fixed above, this ensures consistency based on your latest rule.
+        departments = departments.map(d => ({
+            ...d,
+            platform: addApp(d.platform, 'Chrome'), // Ensure Chrome is present
+            business: addApp(d.business, 'Fast Online') // Ensure Fast Online is present
+        }));
+
 
         // Unique set of Business Apps for counters
         const allBizApps = new Set();
@@ -327,7 +341,7 @@
         document.getElementById('total-depts').innerText = departments.length;
         document.getElementById('total-biz-apps').innerText = allBizApps.size;
 
-        // --- 3. RENDER LOGIC: Department View (Updated to sort by Name) ---
+        // --- 3. RENDER LOGIC: Department View (Updated to sort by Name and prioritize Fast Online) ---
         function renderDepartments() {
             const container = document.getElementById('dept-grid');
             container.innerHTML = '';
@@ -346,7 +360,23 @@
                 const sortedPlatform = sortApps(dept.platform, SORT_ORDER.platform);
                 const sortedUtility = sortApps(dept.utility, SORT_ORDER.utility);
                 const sortedChat = sortApps(dept.chat, SORT_ORDER.chat);
-                const sortedBusiness = dept.business.sort(); // Alphabetical for business
+                
+                // NEW LOGIC: Prioritize Fast Online in Business Apps
+                let businessList = [...dept.business]; // Clone the array
+                let fastOnlineIndex = businessList.indexOf("Fast Online");
+
+                if (fastOnlineIndex > -1) {
+                    // Remove Fast Online from its current position
+                    businessList.splice(fastOnlineIndex, 1);
+                    // Sort the rest alphabetically
+                    businessList.sort();
+                    // Prepend Fast Online
+                    businessList.unshift("Fast Online");
+                } else {
+                    // If not found (shouldn't happen now), just sort the existing list.
+                    businessList.sort();
+                }
+                const sortedBusiness = businessList;
 
                 const hasPlatform = sortedPlatform.length > 0;
                 const hasUtility = sortedUtility.length > 0;
@@ -372,7 +402,7 @@
                                 <i class="fa-brands fa-windows w-4"></i> Nền tảng (Platform)
                             </p>
                             <div class="leading-relaxed">
-                                <!-- Dòng 1: Core Apps (Teams, Office, Edge...) -->
+                                <!-- Dòng 1: Core Apps (Teams, Office, Edge, Chrome...) -->
                                 <div class="mb-1">
                                     ${genBadges(sortedPlatform, 'platform')}
                                 </div>
@@ -423,10 +453,11 @@
             };
 
             departments.forEach(d => {
-                d.platform.forEach(app => countApp('platform', app, d.name));
-                d.chat.forEach(app => countApp('chat', app, d.name));
-                d.business.forEach(app => countApp('business', app, d.name));
-                d.utility.forEach(app => countApp('utility', app, d.name));
+                // Thêm kiểm tra an toàn (|| []) để tránh lỗi 'forEach of undefined'
+                (d.platform || []).forEach(app => countApp('platform', app, d.name));
+                (d.chat || []).forEach(app => countApp('chat', app, d.name));
+                (d.business || []).forEach(app => countApp('business', app, d.name));
+                (d.utility || []).forEach(app => countApp('utility', app, d.name));
             });
 
             // Render Function for a specific category section
@@ -506,4 +537,3 @@
     </script>
 </body>
 </html>
-
