@@ -286,7 +286,7 @@
                 platform: ["Office", "Outlook", "MS Teams", "Edge", "Chrome"], 
                 utility: ["Foxit Reader", "Winrar", "Unikey"],
                 chat: ["Zalo", "Whatsapp"],
-                business: ["Fast Online"],
+                business: [], // Đã xóa Fast Online, giờ là mảng rỗng
                 license: "M365 Basic, Base"
             }
         ];
@@ -295,8 +295,17 @@
         departments = departments.map(d => ({
             ...d,
             platform: addApp(d.platform, 'Chrome'), // Ensure Chrome is present
-            business: addApp(d.business, 'Fast Online') // Ensure Fast Online is present
+            // KHÔNG thêm Fast Online ở bước cleanup này nữa, vì nó không còn là app chung cho tất cả
+            // business: addApp(d.business, 'Fast Online') 
         }));
+        
+        // Cập nhật lại Fast Online (chỉ thêm nếu chưa có, trừ Dược)
+        departments = departments.map(d => {
+             if (d.name !== 'Dược') {
+                 d.business = addApp(d.business, 'Fast Online');
+             }
+             return d;
+        });
 
 
         // Unique set of Business Apps for counters (No longer displayed, but kept for potential future use)
