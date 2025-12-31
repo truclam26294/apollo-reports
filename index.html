@@ -23,85 +23,137 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6; }
         .card { transition: all 0.2s; }
         .card:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
-        /* Adjusted tab styles for larger buttons */
+        
         .tab-button {
-            padding: 10px 20px;
-            border-radius: 8px; /* Slightly rounded corners */
-            border: 1px solid transparent;
-            font-weight: 600;
-            color: #64748b;
-            transition: all 0.2s;
-            background-color: #e2e8f0; /* Light gray background for inactive */
-            margin-right: 12px; /* Space between buttons */
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            font-weight: 700;
+            color: #475569;
+            transition: all 0.3s;
+            background-color: #e2e8f0;
+            margin: 0 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         .tab-button:hover {
             background-color: #cbd5e1;
             color: #1e3a8a;
         }
         .tab-button.tab-active {
-            background-color: #1e3a8a; /* Primary color for active tab */
+            background-color: #1e3a8a;
             color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-color: #1e3a8a;
+            box-shadow: 0 4px 10px rgba(30, 58, 138, 0.3);
         }
-        .badge { font-size: 0.75rem; padding: 0.15rem 0.5rem; border-radius: 0.25rem; white-space: nowrap; margin-right: 4px; margin-bottom: 4px; display: inline-block; font-weight: 500; }
         
-        /* Badge Colors */
-        .badge-platform { background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; } /* Blue */
-        .badge-utility { background-color: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; } /* Gray */
-        .badge-chat { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; } /* Green */
-        .badge-business { background-color: #fce7f3; color: #9d174d; border: 1px solid #fbcfe8; } /* Pink */
+        /* Tooltip & Badge Logic */
+        .badge { 
+            font-size: 0.75rem; 
+            padding: 0.2rem 0.6rem; 
+            border-radius: 0.375rem; 
+            white-space: nowrap; 
+            margin-right: 4px; 
+            margin-bottom: 4px; 
+            display: inline-block; 
+            font-weight: 600; 
+            position: relative;
+            cursor: help;
+        }
+        
+        /* Custom Tooltip Styling */
+        .badge .tooltip {
+            visibility: hidden;
+            width: 180px;
+            background-color: #1e293b;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 50;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -90px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            font-size: 0.7rem;
+            line-height: 1.2;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+            pointer-events: none;
+        }
+        .badge .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #1e293b transparent transparent transparent;
+        }
+        .badge:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .badge-platform { background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+        .badge-utility { background-color: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; }
+        .badge-chat { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+        .badge-business { background-color: #fce7f3; color: #9d174d; border: 1px solid #fbcfe8; }
     </style>
 </head>
 <body>
 
-    <!-- Header --><header class="bg-white shadow-sm sticky top-0 z-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
             <div class="flex items-center gap-3 mb-2 sm:mb-0">
-                <!-- Removed Apollo Logo --><div class="flex flex-col items-center sm:items-start">
-                    <h1 class="text-xl font-bold text-gray-900">Digital Workplace Report</h1>
-                    <p class="text-xs text-gray-500">Cập nhật: 25/11/2025 | Apollo Group</p>
+                <div class="flex flex-col items-center sm:items-start border-l-4 border-apollo pl-4">
+                    <h1 class="text-2xl font-black text-gray-900 tracking-tight uppercase">Digital Workplace Report</h1>
+                    <p class="text-xs text-gray-500 font-bold uppercase tracking-widest">Apollo Group | Dữ liệu: 12/2025</p>
                 </div>
             </div>
-            <div class="text-sm font-semibold text-gray-700">IT System: Trực</div>
+            <div class="px-4 py-2 bg-blue-50 text-blue-800 rounded-full font-bold text-sm border border-blue-100 shadow-sm">
+                <i class="fa-solid fa-user-shield mr-2"></i>Ban CNTT
+            </div>
         </div>
     </header>
 
-    <!-- Main Content --><main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        <!-- Removed Summary Cards --><!-- Navigation Tabs --><div class="flex space-x-4 mb-6 justify-center sm:justify-start">
-            <button onclick="switchView('department')" id="tab-dept" class="tab-button tab-active flex items-center gap-2">
-                <i class="fa-solid fa-users"></i> Thống kê theo Phòng Ban
+        <!-- Tabs -->
+        <div class="flex flex-wrap justify-center mb-10 gap-2">
+            <button onclick="switchView('department')" id="tab-dept" class="tab-button tab-active">
+                <i class="fa-solid fa-building-user text-lg"></i> Thống kê theo Phòng Ban
             </button>
-            <button onclick="switchView('category')" id="tab-cat" class="tab-button flex items-center gap-2">
-                <i class="fa-solid fa-layer-group"></i> Thống kê theo Loại App
+            <button onclick="switchView('category')" id="tab-cat" class="tab-button">
+                <i class="fa-solid fa-layer-group text-lg"></i> Thống kê theo Loại App
             </button>
         </div>
 
-        <!-- View 1: By Department --><div id="view-department" class="block animate-fade-in">
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="dept-grid">
-                <!-- Javascript will render cards here --></div>
+        <!-- View 1: By Department -->
+        <div id="view-department" class="block animate-fade-in">
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="dept-grid"></div>
         </div>
 
-        <!-- View 2: By Category --><div id="view-category" class="hidden animate-fade-in">
-            <div class="grid grid-cols-1 gap-6">
-                
-                <!-- Platform Section --><div class="bg-white rounded-lg shadow p-6">
-                    <h3 class="text-lg font-bold text-blue-800 mb-4 border-b pb-2"><i class="fa-brands fa-windows"></i> Phần mềm Nền tảng (Platform)</h3>
+        <!-- View 2: By Category -->
+        <div id="view-category" class="hidden animate-fade-in">
+            <div class="grid grid-cols-1 gap-8">
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
+                    <h3 class="text-lg font-bold text-blue-800 mb-5 flex items-center gap-2 border-b pb-3"><i class="fa-brands fa-windows"></i> Phần mềm Nền tảng (Platform)</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="cat-platform"></div>
                 </div>
-
-                 <!-- Utility Section --><div class="bg-white rounded-lg shadow p-6">
-                    <h3 class="text-lg font-bold text-gray-600 mb-4 border-b pb-2"><i class="fa-solid fa-toolbox"></i> Phần mềm Tiện ích (Utilities)</h3>
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
+                    <h3 class="text-lg font-bold text-slate-600 mb-5 flex items-center gap-2 border-b pb-3"><i class="fa-solid fa-toolbox"></i> Phần mềm Tiện ích (Utilities)</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="cat-utility"></div>
                 </div>
-
-                 <!-- Chat Section --><div class="bg-white rounded-lg shadow p-6">
-                    <h3 class="text-lg font-bold text-green-700 mb-4 border-b pb-2"><i class="fa-solid fa-comments"></i> Phần mềm Chat & Collaboration</h3>
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
+                    <h3 class="text-lg font-bold text-green-700 mb-5 flex items-center gap-2 border-b pb-3"><i class="fa-solid fa-comments"></i> Phần mềm Chat & Collaboration</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="cat-chat"></div>
                 </div>
-
-                <!-- Business Section --><div class="bg-white rounded-lg shadow p-6">
-                    <h3 class="text-lg font-bold text-purple-700 mb-4 border-b pb-2"><i class="fa-solid fa-rocket"></i> Phần mềm Nghiệp vụ (Specialized)</h3>
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-100">
+                    <h3 class="text-lg font-bold text-purple-700 mb-5 flex items-center gap-2 border-b pb-3"><i class="fa-solid fa-rocket"></i> Phần mềm Nghiệp vụ (Specialized)</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="cat-business"></div>
                 </div>
             </div>
@@ -109,297 +161,291 @@
 
     </main>
 
-    <footer class="bg-white border-t mt-12 py-6">
-        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-500">
-            &copy; 2025 Apollo Internal Report. Powered by IT Department.
+    <footer class="bg-white border-t mt-16 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-sm font-bold text-slate-400 uppercase tracking-tighter">&copy; 2025 APOLLO INTERNAL REPORT. POWERED BY IT DEPARTMENT.</p>
         </div>
     </footer>
 
-    <!-- DATA & LOGIC --><script>
-        // --- 1. CONFIGURATION: SORT ORDERS ---
-        const SORT_ORDER = {
-            // Rule: MS Teams -> Office -> Outlook -> Edge -> Chrome -> Base Wework
-            platform: ['MS Teams', 'Office', 'Outlook', 'Edge', 'Chrome', 'Base Wework'], 
-            utility: ['Unikey', 'Winrar', 'Foxit Reader'],
-            chat: ['Zalo', 'Whatsapp', 'Viber']
+    <script>
+        // --- 1. APP DESCRIPTIONS (Mô tả nhanh) ---
+        const APP_INFO = {
+            "Edge": "Trình duyệt Web của Microsoft",
+            "MS Teams": "Làm việc cộng tác, họp và chat nhóm",
+            "Office": "Outlook, Word, Excel, PowerPoint",
+            "MS Office": "Outlook, Word, Excel, PowerPoint",
+            "Chrome": "Trình duyệt Web Google Chrome",
+            "Fast Online": "Phần mềm ERP FAST phiên bản Web",
+            "Base Wework": "Phần mềm quản lý công việc và dự án",
+            "Foxit Reader": "Phần mềm xem và in file PDF",
+            "Unikey": "Phần mềm gõ tiếng Việt phổ biến",
+            "Winrar": "Phần mềm nén và giải nén file",
+            "X-Change PDF Editor": "Phần mềm đọc, cắt và chỉnh sửa PDF",
+            "EVKey": "Phần mềm gõ tiếng Việt (Tương tự Unikey)",
+            "Hibit Uninstaller": "Phần mềm gỡ cài đặt sạch tận gốc",
+            "Ultraview": "Phần mềm điều khiển máy tính từ xa",
+            "Zalo": "Phần mềm nhắn tin phổ biến nhất",
+            "Whatsapp": "Phần mềm nhắn tin quốc tế",
+            "Viber": "Phần mềm nhắn tin nội bộ",
+            "Wechat": "Phần mềm chat làm việc với đối tác TQ",
+            "Kakao Talk": "Phần mềm chat làm việc với đối tác HQ",
+            "Adobe Photoshop": "Phần mềm thiết kế & chỉnh sửa ảnh",
+            "PowerBI": "Hệ thống báo cáo quản trị thông minh",
+            "Adobe Acrobat": "Chỉnh sửa PDF chuyên nghiệp",
+            "Autocad": "Thiết kế kỹ thuật 2D/3D chuyên sâu",
+            "Fast Offline": "Phần mềm kế toán FAST cài đặt máy",
+            "HTKK": "Hệ thống hỗ trợ kê khai thuế",
+            "iTax Viewer": "Phần mềm đọc hồ sơ thuế định dạng XML",
+            "3DS Max": "Phần mềm thiết kế 3D chuyên nghiệp",
+            "ECUSS": "Phần mềm khai báo Hải quan",
+            "VNACCS": "Hệ thống thông quan Hải quan tự động",
+            "Spyder (python)": "Môi trường lập trình Python phân tích dữ liệu",
+            "SQL Server Management Studio": "Phần mềm quản trị cơ sở dữ liệu SQL",
+            "SQL SSMS": "Phần mềm quản trị cơ sở dữ liệu SQL",
+            "Spyder": "Môi trường lập trình Python",
+            "Wise Eye Mix3": "Phần mềm quản lý máy chấm công",
+            "iBHXH": "Phần mềm bảo hiểm xã hội",
+            "TS24Pro": "Giải pháp kê khai trực tuyến",
+            "Chữ kí số": "Thiết bị/PM ký điện tử",
+            "Sketchup": "Phần mềm thiết kế kiến trúc 3D",
+            "Winbox": "Công cụ quản lý Router Mikrotik chuyên dụng",
+            "Advanced IP Scanner": "Phần mềm quét và phân tích địa chỉ IP",
+            "Sophos Connect": "Phần mềm kết nối VPN Sophos Client",
+            "Virtualbox": "Phần mềm tạo và quản lý máy ảo"
         };
 
-        // Helper function to sort array based on predefined order
+        // --- 2. CONFIGURATION ---
+        const SORT_ORDER = {
+            platform: ['MS Teams', 'Office', 'MS Office', 'Outlook', 'Edge', 'Chrome', 'Base Wework'], 
+            utility: ['Unikey', 'EVKey', 'Winrar', 'Foxit Reader', 'Hibit Uninstaller', 'Ultraview', 'X-Change PDF Editor'],
+            chat: ['Zalo', 'Whatsapp', 'Viber', 'Wechat', 'Kakao Talk']
+        };
+
+        const COMMON_UTILITIES = ['Unikey', 'Winrar', 'Foxit Reader', 'Hibit Uninstaller', 'Ultraview'];
+
         function sortApps(apps, orderList) {
             if (!apps) return [];
             return [...apps].sort((a, b) => {
                 let indexA = orderList.indexOf(a);
                 let indexB = orderList.indexOf(b);
-                
-                // If item not found in list, put it at the end
                 if (indexA === -1) indexA = 999;
                 if (indexB === -1) indexB = 999;
-                
                 return indexA - indexB;
             });
         }
 
-        // Helper function to safely remove an item from an array
-        const removeApp = (arr, app) => arr.filter(item => item !== app);
-        // Helper function to safely add an item to the end of an array (only if not already present)
-        const addApp = (arr, app) => arr.includes(app) ? arr : [...arr, app];
-
-        // --- 2. RAW DATA (Updated to fix Chrome and Fast Online inclusion) ---
+        // --- 3. RAW DATA (Synced with CSV) ---
         let departments = [
             {
-                name: "Kinh Doanh",
-                icon: "fa-briefcase",
-                platform: ["Office", "Outlook", "MS Teams", "Edge", "Chrome", "Base Wework"],
-                utility: ["Winrar", "Unikey", "Foxit Reader"],
+                name: "Ban Thư Ký",
+                icon: "fa-pen-nib",
+                platform: ["MS Teams", "Office", "Outlook", "Edge", "Chrome", "Base Wework"],
+                utility: [...COMMON_UTILITIES],
+                chat: ["Zalo", "Whatsapp", "Viber"],
+                business: ["Fast Online", "PowerBI"],
+                license: "M365 Basic, Base"
+            },
+            {
+                name: "Dược",
+                icon: "fa-pills",
+                platform: ["MS Teams", "Office", "Outlook", "Edge", "Chrome", "Base Wework"],
+                utility: [...COMMON_UTILITIES],
+                chat: ["Zalo"],
+                business: [], // Đã bỏ Fast Online theo yêu cầu
+                license: "M365 Basic, Base"
+            },
+            {
+                name: "HCNS - Hành Chính",
+                icon: "fa-user-shield",
+                platform: ["MS Teams", "Office", "Outlook", "Edge", "Chrome", "Base Wework"],
+                utility: [...COMMON_UTILITIES],
+                chat: ["Zalo", "Whatsapp", "Viber"],
+                business: ["Fast Online", "Wise Eye Mix3"],
+                license: "M365 Basic, Base"
+            },
+            {
+                name: "HCNS - Tuyển Dụng và C&B",
+                icon: "fa-users-gear",
+                platform: ["MS Teams", "Office", "Outlook", "Edge", "Chrome"],
+                utility: [...COMMON_UTILITIES],
+                chat: ["Zalo", "Whatsapp"],
+                business: ["Fast Online", "TS24Pro", "iBHXH", "HTKK", "Wise Eye Mix3"],
+                license: "M365 Basic"
+            },
+            {
+                name: "Phòng QLHT",
+                icon: "fa-server",
+                platform: ["MS Teams", "Office", "Outlook", "Edge", "Chrome", "Base Wework"],
+                utility: [...COMMON_UTILITIES],
                 chat: ["Zalo", "Whatsapp", "Viber"],
                 business: ["Fast Online"],
                 license: "M365 Basic, Base"
             },
             {
-                name: "Marketing (MKT)", // NEW DEPARTMENT
-                icon: "fa-bullhorn",
-                platform: ["Office", "Outlook", "MS Teams", "Edge", "Chrome", "Base Wework"],
-                utility: ["Winrar", "Unikey", "Foxit Reader"],
+                name: "Ban CNTT", // Cập nhật danh sách chính xác cho Ban CNTT
+                icon: "fa-laptop-code",
+                platform: ["Chrome", "Edge", "Fast Online", "MS Teams", "MS Office"],
+                utility: ["Foxit Reader", "Unikey", "Winrar", "X-Change PDF Editor"],
+                chat: ["Zalo", "Whatsapp"],
+                business: ["Adobe Acrobat", "Adobe Photoshop", "Autocad", "Winbox", "Advanced IP Scanner", "Sophos Connect", "Virtualbox", "Wise Eye Mix3"],
+                license: "M365 Basic, Base"
+            },
+            {
+                name: "Kinh Doanh",
+                icon: "fa-briefcase",
+                platform: ["MS Teams", "Office", "Outlook", "Edge", "Chrome", "Base Wework"],
+                utility: [...COMMON_UTILITIES],
                 chat: ["Zalo", "Whatsapp", "Viber"],
-                business: ["Adobe Photoshop", "Fast Online"],
+                business: ["Fast Online"],
                 license: "M365 Basic, Base"
             },
             {
-                name: "Ban Thư Ký",
-                icon: "fa-pen-nib",
-                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Chrome"],
-                utility: ["Foxit Reader", "Winrar", "Unikey"],
-                chat: ["Viber", "Zalo", "Whatsapp"],
-                business: ["PowerBI", "Fast Online"],
-                license: "M365 Basic, Base"
+                name: "Kế Toán",
+                icon: "fa-calculator",
+                platform: ["MS Teams", "Office", "Outlook", "Edge", "Chrome"],
+                utility: [...COMMON_UTILITIES, "EVKey"], // Đã bổ sung EVKey
+                chat: ["Zalo", "Whatsapp"],
+                business: ["Fast Online", "Fast Offline", "MISA", "HTKK", "iTax Viewer", "Chữ kí số"],
+                license: "M365 Basic"
             },
             {
-                name: "Ngoại Thương (Tầng 1)",
+                name: "Tài Chính",
+                icon: "fa-chart-line",
+                platform: ["MS Teams", "Office", "Outlook", "Edge", "Chrome"],
+                utility: [...COMMON_UTILITIES, "EVKey"], // Đã bổ sung EVKey
+                chat: ["Zalo", "Whatsapp"],
+                business: ["Fast Online", "Fast Offline", "Chữ kí số"],
+                license: "M365 Basic"
+            },
+            {
+                name: "Ngoại Thương",
                 icon: "fa-globe",
-                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Chrome"], 
-                utility: ["Foxit Reader", "Winrar", "Unikey"],
-                chat: ["Kakao Talk", "Wechat", "Zalo", "Whatsapp"],
-                business: ["Adobe Photoshop", "Adobe Acrobat", "X-Change PDF Editor", "Fast Online"], 
-                license: "M365 Basic, Base" 
-            },
-            {
-                name: "Ngoại Thương (Tầng 2)",
-                icon: "fa-ship",
-                platform: ["Base Wework", "Chrome", "Office", "Outlook", "MS Teams", "Edge"],
-                utility: ["Foxit Reader", "Winrar", "Unikey"],
-                chat: ["Viber", "Kakao Talk", "Wechat", "Zalo", "Whatsapp"],
-                business: ["ECUSS", "VNACCS", "Adobe Acrobat", "X-Change PDF Editor", "Adobe Photoshop", "Fast Online"],
+                platform: ["MS Teams", "Office", "Outlook", "Edge", "Chrome", "Base Wework"],
+                utility: [...COMMON_UTILITIES],
+                chat: ["Zalo", "Whatsapp", "Viber", "Wechat", "Kakao Talk"],
+                business: ["Fast Online", "Adobe Acrobat", "Adobe Photoshop", "ECUSS", "VNACCS"],
                 license: "M365 Basic, Base"
             },
             {
-                name: "Hệ Thống (chị Lý)",
-                icon: "fa-server",
-                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Chrome"],
-                utility: ["Foxit Reader", "Winrar", "Unikey"],
-                chat: ["Viber", "Zalo", "Whatsapp"],
+                name: "PTKD (General)",
+                icon: "fa-search-dollar",
+                platform: ["MS Teams", "Office", "Outlook", "Edge", "Chrome", "Base Wework"],
+                utility: [...COMMON_UTILITIES],
+                chat: ["Zalo", "Whatsapp"],
+                business: ["Fast Online", "PowerBI", "Spyder (python)", "SQL Server Management Studio"],
+                license: "M365 Basic, Base"
+            },
+            {
+                name: "PTKD - BA",
+                icon: "fa-laptop-code",
+                platform: ["MS Teams", "Office", "Outlook", "Edge", "Chrome", "Base Wework"],
+                utility: [...COMMON_UTILITIES],
+                chat: ["Zalo", "Whatsapp"],
+                business: ["Fast Online", "PowerBI", "SQL SSMS", "Spyder"],
+                license: "M365 Basic, Base"
+            },
+            {
+                name: "PTKD - Thị Trường",
+                icon: "fa-store",
+                platform: ["MS Teams", "Office", "Outlook", "Edge", "Chrome", "Base Wework"],
+                utility: [...COMMON_UTILITIES],
+                chat: ["Zalo", "Whatsapp"],
                 business: ["Fast Online"],
                 license: "M365 Basic, Base"
             },
             {
                 name: "Thu Mua - Office",
                 icon: "fa-shopping-cart",
-                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Chrome"],
-                utility: ["Foxit Reader", "Winrar", "Unikey"],
-                chat: ["Zalo", "Whatsapp","Viber"],
-                business: ["Autocad", "X-Change PDF Editor", "Fast Online"],
+                platform: ["MS Teams", "Office", "Outlook", "Edge", "Chrome", "Base Wework"],
+                utility: [...COMMON_UTILITIES, "X-Change PDF Editor"],
+                chat: ["Zalo", "Whatsapp"],
+                business: ["Fast Online", "Autocad", "X-Change PDF Editor"],
                 license: "M365 Basic, Base"
             },
             {
                 name: "Thu Mua - Xây Dựng",
                 icon: "fa-hard-hat",
-                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Chrome"], 
-                utility: ["Foxit Reader", "Winrar", "Unikey"],
+                platform: ["MS Teams", "Office", "Outlook", "Edge", "Chrome", "Base Wework"],
+                utility: [...COMMON_UTILITIES],
                 chat: ["Zalo", "Whatsapp"],
-                business: ["3DS Max", "Sketchup","Autocad", "Adobe Photoshop", "Fast Online"], 
+                business: ["Fast Online", "3DS Max", "Adobe Photoshop", "Autocad", "Sketchup"],
                 license: "M365 Basic, Base"
             },
             {
-                name: "HCNS - Hành Chính",
-                icon: "fa-user-shield",
-                platform: ["Base Wework", "Chrome", "Office", "Outlook", "MS Teams", "Edge"],
-                utility: ["Foxit Reader", "Winrar", "Unikey"],
+                name: "Marketing (MKT)",
+                icon: "fa-bullhorn",
+                platform: ["MS Teams", "Office", "Outlook", "Edge", "Chrome", "Base Wework"],
+                utility: [...COMMON_UTILITIES],
                 chat: ["Zalo", "Whatsapp", "Viber"],
-                business: ["Base Wework", "Fast Online"],
-                license: "M365 Basic, Base"
-            },
-            {
-                name: "HCNS - Tuyển Dụng và C&B", // Combined
-                icon: "fa-users-gear", 
-                platform: ["Office", "Outlook", "MS Teams", "Edge", "Chrome"], 
-                utility: ["Foxit Reader", "Winrar", "Unikey"],
-                business: ["TS24 Pro", "HTKK", "iBHXH", "Fast Online"],
-                license: "M365 Basic"
-            },
-            {
-                name: "Kế Toán",
-                icon: "fa-calculator",
-                platform: ["MS Teams", "Edge", "Office", "Outlook", "Chrome"], 
-                utility: ["Foxit Reader", "Winrar", "Unikey"],
-                business: ["MISA", "HTKK", "X-Change PDF Editor", "Fast Offline", "Fast Online"],
-                chat: ["Zalo", "Whatsapp"],
-                license: "M365 Basic"
-            },
-            {
-                name: "Tài Chính",
-                icon: "fa-chart-line",
-                platform: ["MS Teams", "Edge", "Office", "Outlook", "Chrome"],
-                utility: ["Foxit Reader", "Winrar", "Unikey"],
-                chat: ["Zalo", "Whatsapp", "Viber"],
-                business: ["X-Change PDF Editor", "Fast Offline", "Fast Online"],
-                license: "M365 Basic"
-            },
-            {
-                name: "PTKD (General)",
-                icon: "fa-search-dollar",
-                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Chrome"],
-                utility: ["Foxit Reader", "Winrar", "Unikey"],
-                chat: ["Zalo", "Whatsapp"],
-                business: ["PowerBI", "Fast Online"],
-                license: "M365 Basic, Base"
-            },
-            {
-                name: "PTKD - BA",
-                icon: "fa-laptop-code",
-                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Chrome"],
-                utility: ["Foxit Reader", "Winrar", "Unikey"],
-                chat: ["Zalo", "Whatsapp"],
-                business: ["SQL SSMS", "Spyder","PowerBI", "Fast Online"],
-                license: "M365 Basic, Base"
-            },
-            {
-                name: "PTKD - Thị Trường",
-                icon: "fa-store",
-                platform: ["Base Wework", "Office", "Outlook", "MS Teams", "Edge", "Chrome"],
-                utility: ["Foxit Reader", "Winrar", "Unikey"],
-                chat: ["Zalo", "Whatsapp"],
-                business: ["Fast Online"], 
-                license: "M365 Basic, Base"
-            },
-            {
-                name: "Dược",
-                icon: "fa-pills",
-                platform: ["Office", "Outlook", "MS Teams", "Edge", "Chrome"], 
-                utility: ["Foxit Reader", "Winrar", "Unikey"],
-                chat: ["Zalo", "Whatsapp"],
-                business: [], // Đã xóa Fast Online, giờ là mảng rỗng
+                business: ["Fast Online", "Adobe Photoshop"],
                 license: "M365 Basic, Base"
             }
         ];
 
-        // --- GLOBAL DATA CLEANUP: Ensure Chrome is in Platform and Fast Online is in Business for ALL ---
-        departments = departments.map(d => ({
-            ...d,
-            platform: addApp(d.platform, 'Chrome'), // Ensure Chrome is present
-            // KHÔNG thêm Fast Online ở bước cleanup này nữa, vì nó không còn là app chung cho tất cả
-            // business: addApp(d.business, 'Fast Online') 
-        }));
-        
-        // Cập nhật lại Fast Online (chỉ thêm nếu chưa có, trừ Dược)
-        departments = departments.map(d => {
-             if (d.name !== 'Dược') {
-                 d.business = addApp(d.business, 'Fast Online');
-             }
-             return d;
-        });
-
-
-        // Unique set of Business Apps for counters (No longer displayed, but kept for potential future use)
-        const allBizApps = new Set();
-        departments.forEach(d => (d.business || []).forEach(app => allBizApps.add(app)));
-
-        // Init Counters (Removed from UI, but can be used internally)
-        // document.getElementById('total-depts').innerText = departments.length;
-        // document.getElementById('total-biz-apps').innerText = allBizApps.size;
-
-        // --- 3. RENDER LOGIC: Department View (Updated to sort by Name and prioritize Fast Online) ---
+        // --- 4. RENDER LOGIC ---
         function renderDepartments() {
             const container = document.getElementById('dept-grid');
             container.innerHTML = '';
             
-            // Sort departments array alphabetically by name
             const sortedDepartments = [...departments].sort((a, b) => a.name.localeCompare(b.name, 'vi', { sensitivity: 'base' }));
 
             sortedDepartments.forEach(dept => {
                 const card = document.createElement('div');
-                card.className = 'card bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col h-full';
+                card.className = 'card bg-white rounded-xl shadow-sm border border-slate-100 p-6 flex flex-col h-full';
                 
-                // Helper to gen badges
-                const genBadges = (list, type) => (list || []).map(item => `<span class="badge badge-${type}">${item}</span>`).join('');
+                const genBadges = (list, type) => (list || []).map(item => {
+                    const desc = APP_INFO[item] || APP_INFO[item.split(' (')[0]] || "Ứng dụng doanh nghiệp";
+                    return `<span class="badge badge-${type}">
+                                ${item}
+                                <span class="tooltip">${desc}</span>
+                            </span>`;
+                }).join('');
 
-                // *** SORTING APP WITHIN DEPARTMENT ***
                 const sortedPlatform = sortApps(dept.platform, SORT_ORDER.platform);
                 const sortedUtility = sortApps(dept.utility, SORT_ORDER.utility);
                 const sortedChat = sortApps(dept.chat, SORT_ORDER.chat);
                 
-                // NEW LOGIC: Prioritize Fast Online in Business Apps
-                let businessList = [...(dept.business || [])]; // Clone the array, ensure it's an array
-                let fastOnlineIndex = businessList.indexOf("Fast Online");
-
-                if (fastOnlineIndex > -1) {
-                    // Remove Fast Online from its current position
-                    businessList.splice(fastOnlineIndex, 1);
-                    // Sort the rest alphabetically
+                let businessList = [...(dept.business || [])];
+                let foIdx = businessList.indexOf("Fast Online");
+                if (foIdx > -1) {
+                    businessList.splice(foIdx, 1);
                     businessList.sort();
-                    // Prepend Fast Online
                     businessList.unshift("Fast Online");
-                } else {
-                    // If not found (shouldn't happen now with addApp), just sort the existing list.
-                    businessList.sort();
-                }
-                const sortedBusiness = businessList;
-
-                const hasPlatform = sortedPlatform.length > 0;
-                const hasUtility = sortedUtility.length > 0;
-                const hasChat = sortedChat.length > 0;
-                const hasBusiness = sortedBusiness.length > 0;
+                } else { businessList.sort(); }
 
                 card.innerHTML = `
-                    <div class="flex items-center gap-3 mb-4 border-b pb-3">
-                        <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-primary shrink-0">
+                    <div class="flex items-center gap-4 mb-5 border-b pb-4">
+                        <div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-primary shrink-0 text-xl">
                             <i class="fa-solid ${dept.icon}"></i>
                         </div>
                         <div>
-                            <h3 class="font-bold text-gray-800">${dept.name}</h3>
-                            <div class="text-xs mt-1 text-gray-500 font-medium">License: <span class="text-orange-600">${dept.license}</span></div>
+                            <h3 class="font-bold text-gray-800 text-lg">${dept.name}</h3>
+                            <div class="text-[11px] mt-0.5 text-gray-400 font-bold uppercase tracking-tighter">License: <span class="text-apollo">${dept.license}</span></div>
                         </div>
                     </div>
                     
                     <div class="space-y-4 text-sm flex-grow">
-                        <!-- 1. Nền tảng (Platform & Utility) -->${hasPlatform || hasUtility ? `
                         <div>
-                            <p class="text-xs font-bold text-blue-800 uppercase mb-1 flex items-center gap-1">
-                                <i class="fa-brands fa-windows w-4"></i> Nền tảng (Platform)
+                            <p class="text-[10px] font-black text-blue-900 uppercase mb-2 tracking-widest flex items-center gap-1">
+                                <i class="fa-brands fa-windows"></i> Nền tảng
                             </p>
                             <div class="leading-relaxed">
-                                <!-- Dòng 1: Core Apps (Teams, Office, Edge, Chrome...) --><div class="mb-1">
-                                    ${genBadges(sortedPlatform, 'platform')}
-                                </div>
-                                <!-- Dòng 2: Tiện ích (Unikey, Winrar...) -->${hasUtility ? `
-                                <div>
-                                    ${genBadges(sortedUtility, 'utility')}
-                                </div>` : ''}
+                                <div class="mb-1">${genBadges(sortedPlatform, 'platform')}</div>
+                                <div>${genBadges(sortedUtility, 'utility')}</div>
                             </div>
-                        </div>` : ''}
-
-                        <!-- 2. Chat -->${hasChat ? `
-                        <div class="border-t border-dashed border-gray-100 pt-2">
-                            <p class="text-xs font-bold text-green-700 uppercase mb-1 flex items-center gap-1">
-                                <i class="fa-solid fa-comments w-4"></i> Chat
+                        </div>
+                        <div class="border-t border-dashed border-slate-100 pt-3">
+                            <p class="text-[10px] font-black text-green-800 uppercase mb-2 tracking-widest flex items-center gap-1">
+                                <i class="fa-solid fa-comments"></i> Liên lạc
                             </p>
                             <div class="leading-relaxed">${genBadges(sortedChat, 'chat')}</div>
-                        </div>` : ''}
-
-                        <!-- 3. Nghiệp vụ -->${hasBusiness ? `
-                        <div class="border-t border-dashed border-gray-100 pt-2">
-                            <p class="text-xs font-bold text-purple-700 uppercase mb-1 flex items-center gap-1">
-                                <i class="fa-solid fa-briefcase w-4"></i> Nghiệp vụ
+                        </div>
+                        ${businessList.length > 0 ? `
+                        <div class="border-t border-dashed border-slate-100 pt-3">
+                            <p class="text-[10px] font-black text-purple-800 uppercase mb-2 tracking-widest flex items-center gap-1">
+                                <i class="fa-solid fa-briefcase"></i> Nghiệp vụ
                             </p>
-                            <div class="leading-relaxed">${genBadges(sortedBusiness, 'business')}</div>
+                            <div class="leading-relaxed">${genBadges(businessList, 'business')}</div>
                         </div>` : ''}
                     </div>
                 `;
@@ -407,59 +453,47 @@
             });
         }
 
-        // --- 4. RENDER LOGIC: Category View (Updated to sort by popularity) ---
         function renderCategories() {
-            // Pivot data and count usage
-            const categories = {
-                platform: {},
-                chat: {},
-                business: {},
-                utility: {}
-            };
-
+            const categories = { platform: {}, chat: {}, business: {}, utility: {} };
             const countApp = (type, appName, deptName) => {
                 if (!categories[type][appName]) categories[type][appName] = [];
                 categories[type][appName].push(deptName);
             };
 
             departments.forEach(d => {
-                // Thêm kiểm tra an toàn (|| []) để tránh lỗi 'forEach of undefined'
                 (d.platform || []).forEach(app => countApp('platform', app, d.name));
                 (d.chat || []).forEach(app => countApp('chat', app, d.name));
                 (d.business || []).forEach(app => countApp('business', app, d.name));
                 (d.utility || []).forEach(app => countApp('utility', app, d.name));
             });
 
-            // Render Function for a specific category section
-            const renderSection = (type, elementId, iconColor) => {
+            const renderSection = (type, elementId) => {
                 const container = document.getElementById(elementId);
                 container.innerHTML = '';
-                
-                // Convert object to array for sorting by count
                 let appArray = Object.keys(categories[type]).map(app => ({
                     name: app,
                     depts: categories[type][app],
                     count: categories[type][app].length
                 }));
-
-                // Sort by count (descending)
                 appArray.sort((a, b) => b.count - a.count);
 
                 appArray.forEach(appData => {
-                    const depts = appData.depts;
-                    const app = appData.name;
-                    // Hầu hết các phòng ban nếu count > 10 (tổng cộng 15 phòng ban)
-                    const isAll = appData.count > departments.length / 2; // More than half
-
+                    const desc = APP_INFO[appData.name] || APP_INFO[appData.name.split(' (')[0]] || "Ứng dụng doanh nghiệp";
+                    const isAll = appArray.length > 1 && appData.count > departments.length / 2;
+                    
                     const item = document.createElement('div');
-                    item.className = 'border rounded-lg p-3 hover:bg-gray-50';
+                    item.className = 'border border-slate-100 rounded-lg p-3 hover:bg-blue-50/30 transition-colors relative cursor-help group';
                     item.innerHTML = `
                         <div class="flex justify-between items-start mb-2">
-                            <span class="font-semibold text-gray-800">${app}</span>
-                            <span class="text-xs font-bold bg-gray-200 px-2 py-0.5 rounded-full text-gray-600">${depts.length}</span>
+                            <span class="font-bold text-gray-800 text-sm">${appData.name}</span>
+                            <span class="text-[10px] font-black bg-slate-200 px-2 py-0.5 rounded text-slate-600">${appData.count}</span>
                         </div>
-                        <div class="text-xs text-gray-500 leading-relaxed">
-                            ${isAll ? '<span class="italic text-blue-600 font-medium">Hầu hết các phòng ban</span>' : depts.join(', ')}
+                        <div class="text-[11px] text-gray-500 leading-tight">
+                            ${isAll ? '<span class="italic text-blue-600 font-bold">Toàn bộ công ty</span>' : appData.depts.join(', ')}
+                        </div>
+                        <div class="tooltip opacity-0 group-hover:opacity-100 absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 bg-slate-800 text-white text-[10px] p-2 rounded shadow-lg pointer-events-none transition-opacity z-50 text-center">
+                            ${desc}
+                            <div class="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-slate-800"></div>
                         </div>
                     `;
                     container.appendChild(item);
@@ -472,7 +506,6 @@
             renderSection('business', 'cat-business');
         }
 
-        // Tab Switching
         function switchView(viewName) {
             const deptView = document.getElementById('view-department');
             const catView = document.getElementById('view-category');
@@ -480,30 +513,18 @@
             const tabCat = document.getElementById('tab-cat');
 
             if (viewName === 'department') {
-                deptView.classList.remove('hidden');
-                catView.classList.add('hidden');
-                
-                tabDept.classList.add('tab-active');
-                tabDept.classList.remove('tab-inactive');
-                
-                tabCat.classList.remove('tab-active');
-                tabCat.classList.add('tab-inactive');
+                deptView.classList.remove('hidden'); catView.classList.add('hidden');
+                tabDept.classList.add('tab-active'); tabCat.classList.remove('tab-active');
             } else {
-                deptView.classList.add('hidden');
-                catView.classList.remove('hidden');
-
-                tabCat.classList.add('tab-active');
-                tabCat.classList.remove('tab-inactive');
-
-                tabDept.classList.remove('tab-active');
-                tabDept.classList.add('tab-inactive');
+                deptView.classList.add('hidden'); catView.classList.remove('hidden');
+                tabCat.classList.add('tab-active'); tabDept.classList.remove('tab-active');
             }
         }
 
-        // Initial Run
-        renderDepartments();
-        renderCategories();
-
+        window.onload = function() {
+            renderDepartments();
+            renderCategories();
+        };
     </script>
 </body>
 </html>
